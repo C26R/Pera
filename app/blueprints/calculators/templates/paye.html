@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}PAYE Calculator{% endblock %}
+{% block scss %}<link rel="stylesheet" type="text/css" href="{{ url_for('calculators.static', filename='scss/calculators.css') }}" />{% endblock %}
+{% block js %}<script type="text/javascript" src="{{ url_for('calculators.static', filename='js/paye.js') }}"></script>{% endblock %}
+
+{% block body %}
+    <div class="container-sm">
+    <div class="grid gap-4">
+        <div class="p-2 g-col-sm-4 dash-title-parent">
+            <h4 class="dash-title dash-title-child">PAYE Calculator</h4>
+        </div>
+    </div>
+    <div class="grid gap-3">
+        <div class="p-2 g-col-sm-4">
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <form>
+                        <div class="mb-3">
+                            <label for="income" class="form-label">Yearly Income</label>
+                            <input type="number" class="form-control" name="income" id="income" value="{{ income }}">
+                        </div>
+                        <p class="col-form-label">KiwiSaver Contribution Rate</p>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="kiwisaver" id="kiwisaver3" value="0.03" {% if kiwisaver == "0.03" %} checked {% endif %}>
+                            <label class="form-check-label" for="kiwisaver3">3%</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="kiwisaver" id="kiwisaver4" value="0.04" {% if kiwisaver == "0.04" %} checked {% endif %}>
+                            <label class="form-check-label" for="kiwisaver4">4%</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="kiwisaver" id="kiwisaver6" value="0.06" {% if kiwisaver == "0.06" %} checked {% endif %}>
+                            <label class="form-check-label" for="kiwisaver6">6%</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="kiwisaver" id="kiwisaver8" value="0.08" {% if kiwisaver == "0.08" %} checked {% endif %}>
+                            <label class="form-check-label" for="kiwisaver8">8%</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="kiwisaver" id="kiwisaver10" value="0.1" {% if kiwisaver == "0.1" %} checked {% endif %}>
+                            <label class="form-check-label" for="kiwisaver10">10%</label>
+                        </div>
+                        <p class="col-form-label">Student Loan</p>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="student_loan" id="slyes" value="yes" {% if student_loan == "yes" %} checked {% endif %}>
+                            <label class="form-check-label" for="slyes">Yes</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="student_loan" id="slno" value="no" {% if student_loan == "no" %} checked {% endif %}>
+                            <label class="form-check-label" for="slno">No</label>
+                        </div>
+                        <button type="submit" class="btn" onclick="paye()">Calculate</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+        <div class="p-2 g-col-sm-8">
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <div class="paye_pie">
+                        <canvas id="paye_pie" height="200"></canvas>
+                    </div>
+                    <script type="text/javascript">
+                        const labels = {{ labels|safe }};
+                        const data = {{ data|safe }};
+                        const backgroundColor = {{ colours|safe }};
+                    </script>
+                    <script type="text/javascript" src="{{ url_for('calculators.static', filename='js/paye_pie.js') }}"></script>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,90 @@
+// Custom variables
+$primary-purple: #6A0DAD;
+$secondary-purple: #8F00FF;
+$subtle-purple: #FAE6FA;
+$background-purple: #FAF5FF;
+
+// Customising Boostrap variables
+$pagination-color: black;
+$pagination-hover-color: black;
+$pagination-active-bg: $primary-purple;
+$pagination-active-border-color: #DEE2E6;
+
+$table-striped-bg: $background-purple;
+$table-hover-bg: $background-purple;
+
+$dropdown-link-active-color: $subtle-purple;
+$dropdown-link-active-bg: $primary-purple;
+
+// Import bootstrap
+@import "../../../../../node_modules/bootstrap/scss/bootstrap";
+
+body {
+    background-color: $background-purple;
+}
+
+.navbar {
+    background-color: $primary-purple;
+    color: $subtle-purple;
+    font-family: 'Kanit', sans-serif;
+    .nav-pills {
+        .nav-link {
+            color: $subtle-purple;
+            &.active {
+                background-color: $secondary-purple;
+            }
+        }
+    }
+    button {
+        color: $subtle-purple;
+    }
+}
+
+.dash-title {
+    font: {
+        family: 'Kanit', sans-serif;
+        weight: bold;
+    }
+    color: $primary-purple;
+}
+
+.account_name {
+    line-height: 20px;
+    font-weight: bold;
+    text-align: left;
+}
+
+.list-group-item.active {
+    background-color: $primary-purple;
+}
+
+.dash-title-parent {
+    display: table;
+}
+
+.dash-title-child {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.btn {
+    background-color: $primary-purple;
+    color: $subtle-purple;
+    &:hover {
+        background-color: $secondary-purple;
+        color: $subtle-purple;
+    }
+    &.disabled {
+        background-color: darkgray;
+        .icon {
+            color: black;
+        }
+    }
+}
+
+.modal-stock-price {
+    color: $primary-purple;
+    font: {
+        family: 'Kanit', sans-serif;
+    }
+}

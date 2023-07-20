@@ -1,0 +1,98 @@
+// Custom variables
+$primary-purple: #6A0DAD;
+$secondary-purple: #8F00FF;
+$subtle-purple: #FAE6FA;
+$background-purple: #FAF5FF;
+
+// Customising Boostrap variables
+$dropdown-link-active-color: $subtle-purple;
+$dropdown-link-active-bg: $primary-purple;
+
+// Import bootstrap
+@import "../../../../../node_modules/bootstrap/scss/bootstrap";
+
+body {
+    background-color: $background-purple;
+}
+
+.navbar {
+    background-color: $primary-purple;
+    color: $subtle-purple;
+    font-family: 'Kanit', sans-serif;
+    .nav-pills {
+        .nav-link {
+            color: $subtle-purple;
+            &.active {
+                background-color: $secondary-purple;
+            }
+        }
+    }
+    button {
+        color: $subtle-purple;
+    }
+}
+
+.dash-title {
+    font-family: 'Kanit', sans-serif;
+    font-weight: bold;
+    color: $primary-purple;
+}
+
+.account_name {
+    line-height: 20px;
+    font-weight: bold;
+    text-align: left;
+}
+
+.list-group-item.active {
+    background-color: $primary-purple;
+}
+
+.dash-title-parent {
+    display: table;
+}
+
+.dash-title-child {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+form {
+    .icon {
+        color: $subtle-purple;
+    }
+    .btn {
+        font-family: 'Kanit', sans-serif;
+        background-color: $primary-purple;
+        &:hover {
+            background-color: $secondary-purple;
+        }
+        &.disabled {
+            background-color: darkgray;
+            .icon {
+                color: black;
+            }
+        }
+    }
+}
+
+.kiwisaver-category {
+    text-align: left;
+}
+
+.kiwisaver-category-value {
+    float: right;
+}
+
+#kiwisaver-balance {
+    color: $primary-purple;
+    vertical-align: middle;
+    padding: {
+        top: 0;
+        bottom: 0;
+    }
+    font: {
+        family: 'Kanit', sans-seris;
+    }
+}
+

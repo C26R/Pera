@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+
+{% block title %} Transactions {% endblock %}
+{% block scss %}<link rel="stylesheet" type="text/css" href="{{ url_for('transactions.static', filename='scss/transactions.css') }}" />{% endblock %}
+{% block js %}{% endblock %}
+a
+{% block body %}
+    <div class="container-sm">
+        <div class="grid gap-3">
+            <div class="p-2 g-col-2 dash-title-parent">
+                <h4 class="dash-title dash-title-child">Accounts</h4>
+            </div>
+            <div class="p-2 g-col-1 dash-title-parent">
+                <form method="post" class="dash-title-child">
+                    <div class="btn-group float-end" role="group">
+                        <button class="btn" type="submit" name="accounts-refresh" title="Refresh">
+                            <i class="bi bi-arrow-clockwise icon"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div class="p-2 g-col-5 dash-title-parent">
+                <h4 class="dash-title dash-title-child">Transactions</h4>
+            </div>
+            <div class="p-2 g-col-4 dash-title-parent">
+                <form method="post" class="dash-title-child">
+                    <div class="btn-group float-end" role="group">
+                        <button class="btn" type="submit" name="transactions-refresh" title="Refresh">
+                            <i class="bi bi-arrow-clockwise icon"></i>
+                        </button>
+                        <button class="btn disabled" type="submit" name="transactions-export" title="Export">
+                            <i class="bi bi-box-arrow-in-up icon"></i>
+                        </button>
+                        <button class="btn disabled" type="submit" name="transactions-print" title="Print">
+                            <i class="bi bi-printer icon"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="grid gap-3">
+            <div class="p-2 g-col-3">
+                <div class="list-group">
+                    {% if account == None %}
+                        <a href="/transactions/" class="list-group-item list-group-item-action active" aria-current="true">
+                            <span class="account_name">All Accounts</span>
+                        </a>
+                    {% else %}
+                        <a href="/transactions/" class="list-group-item list-group-item-action">
+                            <span class="account_name">All Accounts</span>
+                        </a>
+                    {% endif %}
+
+                    {% for acc in accounts %}
+                        {% if acc[0] == account %}
+                            <a href="/transactions/{{ acc[0] }}" class="list-group-item list-group-item-action active" aria-current="true">
+                                <img src="{{ acc[5] }}" class="img-fluid rounded" alt="{{ acc[4] }} Logo"
+                                   style="vertical-align: middle;"
+                                   height="20"
+                                   width="20" />
+                                <span class="account_name">{{ acc[1] }}</span>
+                                <span style="float: right;">${{ acc[2] }}</span>
+                            </a>
+                        {% else %}
+                            <a href="/transactions/{{ acc[0] }}" class="list-group-item list-group-item-action">
+                                <img src="{{ acc[5] }}" class="img-fluid rounded" alt="{{ acc[4] }} Logo"
+                                   style="vertical-align: middle;"
+                                   height="20"
+                                   width="20" />
+                                <span class="account_name">{{ acc[1] }}</span>
+                                <span style="float: right;">${{ acc[2] }}</span>
+                            </a>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="p-2 g-col-9">
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <table class="table table-striped">
+                            <caption>{{ pagination.info }}</caption>
+                            <thead>
+                                <tr>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Account</th>
+                                    <th scope="col">Description</th>
+                                    <th scope="col">Type</th>
+                                    <th scope="col">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for transaction in transactions %}
+                                    <tr>
+                                        <td>{{ transaction[2][:10]|ymd_to_dmy }}</td>
+                                        <td>
+                                            <img src="{{ transaction[14] }}" class="img-fluid rounded" alt="{{ transaction[13] }} Logo"
+                                               style="vertical-align: middle;"
+                                               height="20"
+                                               width="20" />
+                                            {{ transaction[10] }}
+                                        </td>
+                                        <td>{{ transaction[4] }}</td>
+                                        <td>{{ transaction[5].capitalize() }}</td>
+                                        {% if transaction[3] > 0 %}
+                                            <td style="color: green;" class="text-end">${{ transaction[3] }}</td>
+                                        {% elif transaction [3] < 0 %}
+                                            <td style="color: red;" class="text-end">-${{ transaction[3]|abs }}</td>
+                                        {% else %}
+                                            <td>{{ transaction[3] }}</td>
+                                        {% endif %}
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        <nav class="justify-content-center">
+                            {{ pagination.links }}
+                        </nav>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}
