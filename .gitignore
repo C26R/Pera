@@ -3,6 +3,7 @@ __pycache__/
 node_modules/
 venv/
 
+.DS_Store
 .env
 
 *.db
