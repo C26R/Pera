@@ -26,33 +26,38 @@
         {% block js %}{% endblock %}
     </head>
     <body>
-        <nav class="navbar">
+        <nav class="navbar navbar-expand-md">
             <div class="container">
                 <h1><b>Pera</b></h1>
-                <ul class="nav nav-pills">
-                    <li class="nav-item">
-                        <a class="nav-link {% if request.path == "/" %}active{% endif %}" aria-current="page" href="/">Dashboard</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {% if '/transactions' in request.path %}active{% endif %}" href="/transactions/">Transactions</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {% if '/kiwisaver' in request.path %}active{% endif %}" href="/kiwisaver/">KiwiSaver</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {% if '/portfolio' in request.path %}active{% endif %}" href="/portfolio/">Portfolio</a>
-                    </li>
-                    <li class="nav-item">
-                        <div class="dropdown">
-                            <button class="btn dropdown-toggle {% if '/calculators/' in request.path %}active{% endif %}" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Calculators
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item active" href="/calculators/paye">PAYE Calculator</a></li>
-                            </ul>
-                        </div>
-                    </li>
-                </ul>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#responsiveNav" aria-controls="navPills" aria-expanded="false" aria-label="Toggle navigation">
+                    <i class="bi bi-list" style="color: #FAE6FA;"></i>
+                </button>
+                <div class="collapse navbar-collapse justify-content-end" id="responsiveNav">
+                    <ul class="nav nav-pills">
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.path == "/" %}active{% endif %}" aria-current="page" href="/">Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if '/transactions' in request.path %}active{% endif %}" href="/transactions/">Transactions</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if '/kiwisaver' in request.path %}active{% endif %}" href="/kiwisaver/">KiwiSaver</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if '/portfolio' in request.path %}active{% endif %}" href="/portfolio/">Portfolio</a>
+                        </li>
+                        <li class="nav-item">
+                            <div class="dropdown">
+                                <button class="btn dropdown-toggle {% if '/calculators/' in request.path %}active{% endif %}" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Calculators
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item active" href="/calculators/paye">PAYE Calculator</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </nav>
         {% block body %}{% endblock %}
