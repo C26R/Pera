@@ -5,89 +5,106 @@
 {% block js %}<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>{% endblock %}
 
 {% block body %}
-<div class="container-sm">
-    <div class="grid gap-3">
-        <div class="p-2 g-col-sm-11 dash-title-parent">
-            <h4 class="dash-title dash-title-child">KiwiSaver Breakdown</h4>
-        </div>
-        <div class="p-2 g-col-sm-1 dash-title-parent">
-            <form method="post" class="dash-title-child">
-                <div class="btn-group float-end" role="group">
-                    <button class="btn" type="submit" name="kiwisaver-refresh" title="Refresh">
-                        <i class="bi bi-arrow-clockwise icon"></i>
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-    <div class="grid gap-3">
-        <div class="p-2 g-col-sm-4">
-            <ul class="list-group">
-                <li class="list-group-item" id="kiwisaver-balance">
-                    <span style="font-size: 2em;"><b>${{ "%.2f"|format(account[2]) }}</b></span>
-                    {% set returns_percentage = (account[2] + account[7] - account[6] - account[5] - account[8] - account[10]) / account[2] * 100 %}
-                    {% if returns_percentage > 0 %}
-                        <span style="color: green;">
-                            %{{ "%.2f"|format(returns_percentage) }}
-                        </span>
-                    {% elif returns_percentage < 0 %}
-                        <span style="color: red;">
-                            <i class="bi bi-arrow-down"></i>
-                            %{{ "%.2f"|format(returns_percentage) }}
-                        </span>
-                    {% else %}
-                        <span style="float: right;">
-                            %{{ "%.2f"|format(returns_percentage) }}
-                        </span>
-                    {% endif %}
-                </li>
-                <li class="list-group-item">
-                    <span class="kiwisaver-category">Opening Balance</span>
-                    <span class="kiwisaver-category-value">${{ "%.2f"|format(account[10]) }}</span>
-                </li>
-                <li class="list-group-item">
-                    <span class="kiwisaver-category">Personal Contributions</span>
-                    <span class="kiwisaver-category-value">${{ "%.2f"|format(account[6]) }}</span>
-                </li>
-                <li class="list-group-item">
-                    <span class="kiwisaver-category">Employer Contributions</span>
-                    <span class="kiwisaver-category-value">${{ "%.2f"|format(account[5]) }}</span>
-                </li>
-                <li class="list-group-item">
-                    <span class="kiwisaver-category">Government Contributions</span>
-                    <span class="kiwisaver-category-value">${{ "%.2f"|format(account[8]) }}</span>
-                </li>
-                <li class="list-group-item">
-                    <span class="kiwisaver-category">Investment Returns</span>
-                    <span class="kiwisaver-category-value">
-                        ${{ "%.2f"|format(account[2] + account[7] - account[6] - account[5] - account[8] - account[10])}}
-                    </span>
-                </li>
-                <li class="list-group-item">
-                    <span class="kiwisaver-category">Withdrawals</span>
-                    <span class="kiwisaver-category-value">${{ "%.2f"|format(account[11]) }}</span>
-                </li>
-                <li class="list-group-item">
-                    <span class="kiwisaver-category">Tax</span>
-                    <span class="kiwisaver-category-value">${{ "%.2f"|format(account[7]) }}</span>
-                </li>
-            </ul>
-        </div>
-        <div class="p-2 g-col-sm-8">
-            <ul class="list-group">
-                <li class="list-group-item">
-                    <div>
-                        <canvas id="kiwisaver-chart" height="119"></canvas>
+    <div class="container">
+        <div class="row gx-4">
+            <!-- KiwiSaver Breakdown -->
+            <div class="col-lg-4">
+                <div class="p-2 row">
+                    <div class="col dash-title-parent">
+                        <h4 class="dash-title dash-title-child">Breakdown</h4>
                     </div>
-                    <script>
-                        const labels = {{ labels|safe }};
-                        const data = {{ data|safe }};
-                    </script>
-                    <script type="text/javascript" src="{{ url_for('kiwisaver.static', filename='js/kiwisaver_chart.js') }}"></script>
-                </li>
-            </ul>
+                    <div class="col-auto dash-title-parent">
+                        <form method="post" class="dash-title-child">
+                            <button class="btn float-end" type="submit" name="accounts-refresh" title="Refresh">
+                                <i class="bi bi-arrow-clockwise icon"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                <div class="p-2 row">
+                    <ul class="list-group">
+                        <li class="list-group-item" id="kiwisaver-balance">
+                            <span style="font-size: 2em;"><b>${{ "%.2f"|format(account[2]) }}</b></span>
+                            {% set returns_percentage = (account[2] + account[7] - account[6] - account[5] - account[8] - account[10]) / account[2] * 100 %}
+                            {% if returns_percentage > 0 %}
+                                <span style="color: green;">
+                                    %{{ "%.2f"|format(returns_percentage) }}
+                                </span>
+                            {% elif returns_percentage < 0 %}
+                                <span style="color: red;">
+                                    <i class="bi bi-arrow-down"></i>
+                                    %{{ "%.2f"|format(returns_percentage) }}
+                                </span>
+                            {% else %}
+                                <span style="float: right;">
+                                    %{{ "%.2f"|format(returns_percentage) }}
+                                </span>
+                            {% endif %}
+                        </li>
+                        <li class="list-group-item">
+                            <span class="kiwisaver-category">Opening Balance</span>
+                            <span class="kiwisaver-category-value">${{ "%.2f"|format(account[10]) }}</span>
+                        </li>
+                        <li class="list-group-item">
+                            <span class="kiwisaver-category">Personal Contributions</span>
+                            <span class="kiwisaver-category-value">${{ "%.2f"|format(account[6]) }}</span>
+                        </li>
+                        <li class="list-group-item">
+                            <span class="kiwisaver-category">Employer Contributions</span>
+                            <span class="kiwisaver-category-value">${{ "%.2f"|format(account[5]) }}</span>
+                        </li>
+                        <li class="list-group-item">
+                            <span class="kiwisaver-category">Government Contributions</span>
+                            <span class="kiwisaver-category-value">${{ "%.2f"|format(account[8]) }}</span>
+                        </li>
+                        <li class="list-group-item">
+                            <span class="kiwisaver-category">Investment Returns</span>
+                            <span class="kiwisaver-category-value">
+                                ${{ "%.2f"|format(account[2] + account[7] - account[6] - account[5] - account[8] - account[10])}}
+                            </span>
+                        </li>
+                        <li class="list-group-item">
+                            <span class="kiwisaver-category">Withdrawals</span>
+                            <span class="kiwisaver-category-value">${{ "%.2f"|format(account[11]) }}</span>
+                        </li>
+                        <li class="list-group-item">
+                            <span class="kiwisaver-category">Tax</span>
+                            <span class="kiwisaver-category-value">${{ "%.2f"|format(account[7]) }}</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- KiwiSaver Chart -->
+            <div class="col-lg-8">
+                <div class="p-2 row">
+                    <div class="col dash-title-parent">
+                        <h4 class="dash-title dash-title-child">History</h4>
+                    </div>
+                    <div class="col-auto dash-title-parent">
+                        <form method="post" class="dash-title-child">
+                            <button class="btn float-end" type="submit" name="accounts-refresh" title="Refresh">
+                                <i class="bi bi-arrow-clockwise icon"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                <div class="p-2 row">
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <div class="chart-container">
+                                <canvas id="kiwisaver-chart"></canvas>
+                            </div>
+                            <script>
+                                const labels = {{ labels|safe }};
+                                const data = {{ data|safe }};
+                            </script>
+                            <script type="text/javascript" src="{{ url_for('kiwisaver.static', filename='js/kiwisaver_chart.js') }}"></script>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            </div>
         </div>
     </div>
-</div>
 {% endblock %}
 

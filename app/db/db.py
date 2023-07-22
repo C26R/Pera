@@ -1,11 +1,10 @@
 import sqlite3
 
 from datetime import date
-from pprint import pprint
 
 from app.api import manual_refresh, get_transactions_range, get_request_accounts
 
-con = sqlite3.connect("db/sample.db", check_same_thread=False)
+con = sqlite3.connect("db/db.db", check_same_thread=False)
 cur = con.cursor()
 
 
@@ -62,7 +61,6 @@ def refresh_accounts():
     formatted_accounts = []
 
     for account in accounts:
-        pprint(account)
         if account["type"] not in ["KIWISAVER", "INVESTMENT", "WALLET"]:
             formatted_accounts.append((account["_id"],
                                        account["name"],

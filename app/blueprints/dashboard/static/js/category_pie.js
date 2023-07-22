@@ -10,6 +10,8 @@ new Chart(
                 backgroundColor: backgroundColor
             }]
         },
-        options: {}
+        options: {
+            maintainAspectRatio: false
+        }
     }
 );

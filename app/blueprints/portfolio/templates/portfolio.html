@@ -9,145 +9,147 @@
 {% endblock %}
 
 {% block body %}
-    <div class="container-sm">
-        <div class="grid gap-3">
-            <div class="p-2 g-col-11 dash-title-parent">
-                <h4 class="dash-title dash-title-child">Shares</h4>
-            </div>
-            <div class="p-2 g-col-1 dash-title-parent">
-                <form method="post" class="dash-title-child">
-                    <div class="btn-group float-end" role="group">
-                        <button class="btn" type="submit" name="portfolio-refresh" title="Refresh">
-                            <i class="bi bi-arrow-clockwise icon"></i>
-                        </button>
+    <div class="container">
+        <div class="row gx-4">
+            <div class="col-lg-12">
+                <div class="p-2 row">
+                    <div class="col dash-title-parent">
+                        <h4 class="dash-title dash-title-child">Portfolio</h4>
                     </div>
-                </form>
-            </div>
-        </div>
-        <div class="grid gap-3">
-            <div class="p-2 g-col-12">
-                <ul class="list-group">
-                    <li class="list-group-item">
-                        <table class="table table-striped" style="vertical-align: middle;">
-                            <caption>{{ pagination.info }}</caption>
-                            <thead>
-                                <tr>
-                                    <th scope="col">Stock</th>
-                                    <th scope="col">Shares</th>
-                                    <th scope="col">Value</th>
-                                    <th scope="col">Returns</th>
-                                    <th scope="col"></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for stock in stocks %}
-                                    <tr>
-                                        <td>
-                                            <img src="{{ stock[3] }}" class="img-fluid rounded" alt="{{ stock[2] }} Logo"
-                                               style="vertical-align: middle;"
-                                               height="30"
-                                               width="30" />
-                                            {{ stock[1] }} ({{ stock[2] }})
-                                        </td>
-                                        <td>{{ stock[4] }}</td>
-                                        <td>${{ stock[5] }} {{ stock_info[stock[2]]["currency"] }}</td>
-                                        <td>
-                                            {% if stock[6] > 0 %}
-                                                <span style="color: green;">${{ stock[6] }} {{ stock_info[stock[2]]["currency"] }}</span> ({{ "%.2f"|format(stock[6] / stock[5] * 100) }}%)
-                                            {% elif stock[6] < 0 %}
-                                                <span style="color: red;">-${{ stock[6]|abs }} {{ stock_info[stock[2]]["currency"] }}</span> ({{ "%.2f"|format(stock[6] / stock[5] * 100) }}%)
-                                            {% else %}
-                                                <span>${{ stock[6] }} {{ stock_info[stock[2]]["currency"] }}</span> ({{ "%.2f"|format(stock[6] / stock[5] * 100) }}%)
-                                            {% endif %}
-                                        </td>
-                                        <td>
-                                            <button type="button" class="btn float-end" data-bs-toggle="modal" data-bs-target="#{{ stock[0] }}">More</button>
-                                            <div class="modal fade" id="{{ stock[0] }}" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h4 class="modal-title dash-title">{{ stock[1] }} ({{ stock[2] }})</h4>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <div class="container-fluid">
-                                                                <div class="row">
-                                                                    <div class="col-sm-4">
-                                                                        <h4 class="modal-stock-price">{{ "$%.2f"|format(stock_history[stock[2]]["data"][-1]) }} per share</h4>
-                                                                    </div>
-                                                                    <div class="col-sm-8">
-                                                                        <div class="{{ stock[2] }}_pie">
-                                                                            <canvas id="{{ stock[2] }}_pie" height="250"></canvas>
-                                                                            <select class="form-select" onchange="filter{{ stock[2] }}(this)">
-                                                                                <option value="0.25">1 Week</option>
-                                                                                <option value="1">1 Month</option>
-                                                                                <option value="6">6 Months</option>
-                                                                                <option value="12">1 Year</option>
-                                                                                <option value="60">5 Years</option>
-                                                                            </select>
-                                                                        </div>
-                                                                        <script type="text/javascript">
-                                                                            const {{ stock[2] }}_chart = new Chart(
-                                                                                document.getElementById('{{ stock[2] }}_pie').getContext('2d'),
-                                                                                {
-                                                                                    type: 'line',
-                                                                                    data: {
-                                                                                        labels: {{ stock_history[stock[2]]["labels"]|safe }},
-                                                                                        datasets: [{
-                                                                                            data: {{ stock_history[stock[2]]["data"]|safe }},
-                                                                                            label: '{{ stock[2]|safe }}',
-                                                                                            fill: true,
-                                                                                            borderColor: '#6A0DAD'
-                                                                                        }]
-                                                                                    },
-                                                                                    options: {
-                                                                                        scales: {
-                                                                                            x: {
-                                                                                                type: 'time',
-                                                                                                time: {
-                                                                                                    unit: 'day'
+                    <div class="col-auto dash-title-parent">
+                        <form method="post" class="dash-title-child">
+                            <button class="btn float-end" type="submit" name="portfolio-refresh" title="Refresh">
+                                <i class="bi bi-arrow-clockwise icon"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                <div class="p-2 row">
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <div class="table-responsive">
+                                <table class="table table-striped" style="vertical-align: middle;">
+                                    <caption>{{ pagination.info }}</caption>
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Stock</th>
+                                            <th scope="col">Shares</th>
+                                            <th scope="col">Value</th>
+                                            <th scope="col">Returns</th>
+                                            <th scope="col"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for stock in stocks %}
+                                            <tr>
+                                                <td>
+                                                    <img src="{{ stock[3] }}" class="img-fluid rounded" alt="{{ stock[2] }} Logo"
+                                                       style="vertical-align: middle;"
+                                                       height="30"
+                                                       width="30" />
+                                                    {{ stock[1] }} ({{ stock[2] }})
+                                                </td>
+                                                <td>{{ stock[4] }}</td>
+                                                <td>${{ stock[5] }} {{ stock_info[stock[2]]["currency"] }}</td>
+                                                <td>
+                                                    {% if stock[6] > 0 %}
+                                                        <span style="color: green;">${{ stock[6] }} {{ stock_info[stock[2]]["currency"] }}</span> ({{ "%.2f"|format(stock[6] / stock[5] * 100) }}%)
+                                                    {% elif stock[6] < 0 %}
+                                                        <span style="color: red;">-${{ stock[6]|abs }} {{ stock_info[stock[2]]["currency"] }}</span> ({{ "%.2f"|format(stock[6] / stock[5] * 100) }}%)
+                                                    {% else %}
+                                                        <span>${{ stock[6] }} {{ stock_info[stock[2]]["currency"] }}</span> ({{ "%.2f"|format(stock[6] / stock[5] * 100) }}%)
+                                                    {% endif %}
+                                                </td>
+                                                <td>
+                                                    <button type="button" class="btn float-end" data-bs-toggle="modal" data-bs-target="#{{ stock[0] }}">More</button>
+                                                    <div class="modal fade" id="{{ stock[0] }}" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h4 class="modal-title dash-title">{{ stock[1] }} ({{ stock[2] }})</h4>
+                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <div class="container-fluid">
+                                                                        <div class="row">
+                                                                            <div class="col-sm-4">
+                                                                                <h4 class="modal-stock-price">{{ "$%.2f"|format(stock_history[stock[2]]["data"][-1]) }} per share</h4>
+                                                                            </div>
+                                                                            <div class="col-sm-8">
+                                                                                <div class="{{ stock[2] }}_pie">
+                                                                                    <canvas id="{{ stock[2] }}_pie" height="250"></canvas>
+                                                                                    <select class="form-select" onchange="filter{{ stock[2] }}(this)">
+                                                                                        <option value="0.25">1 Week</option>
+                                                                                        <option value="1">1 Month</option>
+                                                                                        <option value="6">6 Months</option>
+                                                                                        <option value="12">1 Year</option>
+                                                                                        <option value="60">5 Years</option>
+                                                                                    </select>
+                                                                                </div>
+                                                                                <script type="text/javascript">
+                                                                                    const {{ stock[2] }}_chart = new Chart(
+                                                                                        document.getElementById('{{ stock[2] }}_pie').getContext('2d'),
+                                                                                        {
+                                                                                            type: 'line',
+                                                                                            data: {
+                                                                                                labels: {{ stock_history[stock[2]]["labels"]|safe }},
+                                                                                                datasets: [{
+                                                                                                    data: {{ stock_history[stock[2]]["data"]|safe }},
+                                                                                                    label: '{{ stock[2]|safe }}',
+                                                                                                    fill: true,
+                                                                                                    borderColor: '#6A0DAD'
+                                                                                                }]
+                                                                                            },
+                                                                                            options: {
+                                                                                                scales: {
+                                                                                                    x: {
+                                                                                                        type: 'time',
+                                                                                                        time: {
+                                                                                                            unit: 'day'
+                                                                                                        },
+                                                                                                        min: luxon.DateTime.now().plus({ months: -0.25 }).toISODate(),
+                                                                                                        max: luxon.DateTime.now().plus({ days: -1 }).toISODate()
+                                                                                                    }
                                                                                                 },
-                                                                                                min: luxon.DateTime.now().plus({ months: -0.25 }).toISODate(),
-                                                                                                max: luxon.DateTime.now().plus({ days: -1 }).toISODate()
-                                                                                            }
-                                                                                        },
-                                                                                        elements: {
-                                                                                            point: {
-                                                                                                radius: 0
-                                                                                            }
-                                                                                        },
-                                                                                        plugins: {
-                                                                                            legend: {
-                                                                                                display: false
+                                                                                                elements: {
+                                                                                                    point: {
+                                                                                                        radius: 0
+                                                                                                    }
+                                                                                                },
+                                                                                                plugins: {
+                                                                                                    legend: {
+                                                                                                        display: false
+                                                                                                    }
+                                                                                                }
                                                                                             }
                                                                                         }
-                                                                                    }
-                                                                                }
-                                                                            );
+                                                                                    );
 
-                                                                            function filter{{ stock[2] }}(months) {
-                                                                                {{ stock[2] }}_chart.config.options.scales.x.min = luxon.DateTime.now().plus({ months: -months.value }).toISODate();
-                                                                                {{ stock[2] }}_chart.config.options.scales.x.max = luxon.DateTime.now().plus({ days: -1 }).toISODate();
-                                                                                {{ stock[2] }}_chart.update();
-                                                                            }
-                                                                        </script>
+                                                                                    function filter{{ stock[2] }}(months) {
+                                                                                        {{ stock[2] }}_chart.config.options.scales.x.min = luxon.DateTime.now().plus({ months: -months.value }).toISODate();
+                                                                                        {{ stock[2] }}_chart.config.options.scales.x.max = luxon.DateTime.now().plus({ days: -1 }).toISODate();
+                                                                                        {{ stock[2] }}_chart.update();
+                                                                                    }
+                                                                                </script>
+                                                                            </div>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                        <nav class="justify-content-center">
-                            {{ pagination.links }}
-                        </nav>
-                    </li>
-                </ul>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <nav class="justify-content-center">
+                                {{ pagination.links }}
+                            </nav>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>

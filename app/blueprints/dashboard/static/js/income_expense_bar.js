@@ -15,7 +15,8 @@ new Chart(
                 y: {
                     beginAtZero: true
                 }
-            }
+            },
+            maintainAspectRatio: false
         }
     }
 );

@@ -11,6 +11,7 @@ new Chart(
             }]
         },
         options: {
+            maintainAspectRatio: false,
             scales: {
                 x: {
                     type: 'time',

@@ -3,107 +3,120 @@
 {% block title %}Dashboard{% endblock %}
 {% block scss %}<link rel="stylesheet" type="text/css" href="{{ url_for('dashboard.static', filename='scss/dashboard.css') }}" />{% endblock %}
 {% block js %}{% endblock %}
-a
+
 {% block body %}
-    <div class="container-sm">
-        <div class="grid gap-3">
-            <div class="p-2 g-col-sm-3 dash-title-parent">
-                <h4 class="dash-title dash-title-child">Accounts</h4>
-            </div>
-            <div class="p-2 g-col-sm-1 dash-title-parent">
-                <form method="post" class="dash-title-child">
-                    <div class="btn-group float-end" role="group">
-                        <button class="btn" type="submit" name="accounts-refresh" title="Refresh">
-                            <i class="bi bi-arrow-clockwise icon"></i>
-                        </button>
+    <div class="container">
+        <div class="row gx-4">
+            <div class="col-lg-4">
+                <!-- Accounts -->
+                <div class="p-2 row">
+                    <div class="col dash-title-parent">
+                        <h4 class="dash-title dash-title-child">Accounts</h4>
                     </div>
-                </form>
-            </div>
-            <div class="p-2 g-col-sm-5 dash-title-parent">
-                <h4 class="dash-title dash-title-child">Breakdowns</h4>
-            </div>
-            <div class="p-2 g-col-sm-3 dash-title-parent">
-                <form method="post" class="row g-2 dash-title-child">
-                    <div class="col-auto float-end">
-                        <button class="btn" type="submit" name="pie-refresh" title="Refresh">
-                            <i class="bi bi-arrow-clockwise icon"></i>
-                        </button>
+                    <div class="col-auto dash-title-parent">
+                        <form method="post" class="dash-title-child">
+                            <button class="btn float-end" type="submit" name="accounts-refresh" title="Refresh">
+                                <i class="bi bi-arrow-clockwise icon"></i>
+                            </button>
+                        </form>
                     </div>
-                    <div class="col-auto float-end">
-                        <select class="form-select" name="pie-range" aria-label="Pie chart category breakdown time range select">
-                            {% for row in choices %}
-                                <option value="{{ row[0] }}" {% if row[0] == selected %}selected{% endif %}>
-                                    {{ row[1] }}
-                                </option>
-                            {% endfor %}
-                        </select>
+                </div>
+                <div class="p-2 row">
+                    <ul class="list-group">
+                        {% for account in accounts %}
+                              <li class="list-group-item">
+                                  <img src="{{ account[5] }}" class="account-icon img-fluid rounded"
+                                       alt="{{ account[4] }} Logo"
+                                       height="20"
+                                       width="20" />
+                                  <span class="account-name">{{ account[1] }}</span>
+                                  <span class="account-value">${{ account[2] }}</span>
+                              </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <!-- KiwiSaver -->
+                <div class="p-2 row">
+                    <div class="col dash-title-parent">
+                        <h4 class="dash-title dash-title-child">KiwiSaver</h4>
                     </div>
-                </form>
-            </div>
-        </div>
-        <div class="grid gap-3">
-            <div class="p-2 g-col-sm-4">
-                <ul class="list-group">
-                    {% for account in accounts %}
-                          <li class="list-group-item">
-                              <img src="{{ account[5] }}" class="img-fluid rounded" alt="{{ account[4] }} Logo"
-                                   style="vertical-align: middle;"
-                                   height="20"
-                                   width="20" />
-                              <span class="account_name">{{ account[1] }}</span>
-                              <span style="float: right;">${{ account[2] }}</span>
-                          </li>
-                    {% endfor %}
-                </ul>
-            </div>
-            <div class="p-2 g-col-sm-8">
-                <ul class="list-group">
-                    <li class="list-group-item">
-                        <div class="charts">
-                            <canvas id="category_pie" height="150"></canvas>
-                            <canvas id="income_expense_bar" height="150" width="150"></canvas>
-                        </div>
-                        <script type="text/javascript">
-                            const pie_labels = {{ pie_labels|safe }};
-                            const pie_data = {{ pie_data|safe }};
-                            const backgroundColor = {{ colours|safe }};
-                            const bar_labels = {{ bar_labels|safe }};
-                            const bar_data = {{ bar_data|safe }};
-                        </script>
-                        <script type="text/javascript" src="{{ url_for('dashboard.static', filename='js/category_pie.js') }}"></script>
-                        <script type="text/javascript" src="{{ url_for('dashboard.static', filename='js/income_expense_bar.js') }}"></script>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <div class="grid gap-3">
-            <div class="p-2 g-col-sm-3 dash-title-parent">
-                <h4 class="dash-title dash-title-child">KiwiSaver</h4>
-            </div>
-            <div class="p-2 g-col-sm-1 dash-title-parent">
-                <form method="post" class="dash-title-child">
-                    <div class="btn-group float-end" role="group">
-                        <button class="btn" type="submit" name="kiwisaver-refresh" title="Refresh">
-                            <i class="bi bi-arrow-clockwise icon"></i>
-                        </button>
+                    <div class="col-auto dash-title-parent">
+                        <form method="post" class="dash-title-child">
+                            <button class="btn float-end" type="submit" name="kiwisaver-refresh" title="Refresh">
+                                <i class="bi bi-arrow-clockwise icon"></i>
+                            </button>
+                        </form>
                     </div>
-                </form>
+                </div>
+                <div class="p-2 row">
+                    <ul class="list-group">
+                        {% for kiwisaver in kiwisavers %}
+                              <li class="list-group-item">
+                                  <img src="{{ kiwisaver[4] }}" class="account-icon img-fluid rounded"
+                                       alt="{{ kiwisaver[3] }} Logo"
+                                       height="20"
+                                       width="20" />
+                                  <span class="account-name">{{ kiwisaver[1] }}</span>
+                                  <span class="account-value">${{ kiwisaver[2] }}</span>
+                              </li>
+                        {% endfor %}
+                    </ul>
+                </div>
             </div>
-        </div>
-        <div class="grid gap-3">
-            <div class="p-2 g-col-sm-4">
-                <ul class="list-group">
-                    {% for kiwisaver in kiwisavers %}
-                          <li class="list-group-item">
-                              <img src="{{ kiwisaver[4] }}" class="img-fluid rounded" alt="{{ kiwisaver[3] }} Logo"
-                                   style="vertical-align: middle;"
-                                   height="20"
-                                   width="20" />
-                              <span class="account_name">{{ kiwisaver[1] }}</span>
-                              <span style="float: right;">${{ kiwisaver[2] }}</span>
-                          </li>
-                    {% endfor %}
-                </ul>
+            <div class="col-lg-8">
+                <!-- Breakdowns -->
+                <div class="p-2 row">
+                    <div class="col dash-title-parent">
+                        <h4 class="dash-title dash-title-child">Breakdowns</h4>
+                    </div>
+                    <div class="col-auto dash-title-parent">
+                        <form method="post" class="dash-title-child">
+                            <div class="row">
+                                <div class="col">
+                                    <select class="form-select float-end" name="pie-range" aria-label="Pie chart category breakdown time range select">
+                                        {% for row in choices %}
+                                            <option value="{{ row[0] }}" {% if row[0] == selected %}selected{% endif %}>
+                                                {{ row[1] }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-auto">
+                                    <button class="btn float-end" type="submit" name="pie-refresh" title="Refresh">
+                                        <i class="bi bi-arrow-clockwise icon"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="p-2 row">
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="chart-container">
+                                        <canvas id="category_pie"></canvas>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="chart-container">
+                                        <canvas id="income_expense_bar"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <script type="text/javascript">
+                                const pie_labels = {{ pie_labels|safe }};
+                                const pie_data = {{ pie_data|safe }};
+                                const backgroundColor = {{ colours|safe }};
+                                const bar_labels = {{ bar_labels|safe }};
+                                const bar_data = {{ bar_data|safe }};
+                            </script>
+                            <script type="text/javascript" src="{{ url_for('dashboard.static', filename='js/category_pie.js') }}"></script>
+                            <script type="text/javascript" src="{{ url_for('dashboard.static', filename='js/income_expense_bar.js') }}"></script>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
