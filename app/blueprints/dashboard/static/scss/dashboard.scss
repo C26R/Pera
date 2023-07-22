@@ -38,10 +38,18 @@ body {
     color: $primary-purple;
 }
 
-.account_name {
+.account-icon {
+    vertical-align: middle;
+}
+
+.account-name {
     line-height: 20px;
     font-weight: bold;
     text-align: left;
+}
+
+.account-value {
+    float: right;
 }
 
 .list-group-item.active {
@@ -76,12 +84,6 @@ form {
     }
 }
 
-.charts {
+.chart-container {
     position: relative;
-    display: flex;
-    height: 50vh;
-}
-
-.navbar-toggler {
-
 }
